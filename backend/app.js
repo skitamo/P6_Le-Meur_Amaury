@@ -9,7 +9,7 @@ const helmet = require('helmet');
 const session = require('cookie-session');
 
 /* Déclaration des routes */
-
+const userRoutes = require('./routes/user');
 
 
 /* Création d'une application express*/
@@ -19,6 +19,11 @@ const app = express();
 require('dotenv').config();
 
 /* Connection de l'app à MongoDB */
+mongoose.connect(process.env.DB_URL,
+	{ useNewUrlParser: true,
+	  useUnifiedTopology: true })
+	.then(() => console.log('Connexion à MongoDB réussie !'))
+	.catch(() => console.log('Connexion à MongoDB échouée !'));
 
 /* Middleware Header pour éviter les erreurs CORS */
 app.use((req, res, next) => {
