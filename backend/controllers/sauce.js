@@ -58,3 +58,42 @@ exports.getOneSauce = (req, res, next) => {
 		.then(sauce => res.status(200).json(sauce))
 		.catch(error => res.status(404).json({ error }));
 };
+
+/* Route POST pour like/dislike une sauce */
+exports.likeDislikeSauce = (req, res, next) => {
+	let like = req.body.like
+
+		if (like === 1) {
+			Sauce.updateOne({ _id: req.params.id }, { $push: { usersLiked: req.body.userId },
+				$inc: { likes: +1}, _id: req.params.id })
+				.then(() => res.status(200).json({ message: 'Vous avez liké cette sauce !'}))
+				.catch((error) => res.status(400).json({ error }))
+		}
+
+		if (like === -1) {
+			Sauce.updateOne({ _id: req.params.id }, { $push: { usersDisliked: req.body.userId },
+				$inc : { dislikes: +1}, _id: req.params.id })
+				.then(() => res.status(200).json({ message: 'Vous avez disliké cette sauce !'}))
+				.catch((error) => res.status(400).json({ error }))
+		}
+
+		if (like === 0) {
+			Sauce.findOne({ _id: req.params.id })
+			.then((sauce) => {
+				if (sauce.usersLiked.includes(req.body.userId)) {
+					Sauce.updateOne({ _id: req.params.id}, { $pull: { usersLiked: req.body.userId },
+						$inc: { likes: -1}, _id: req.params.id })
+						.then(() => res.status(200).json({ message: 'Vous ne likez plus cette sauce !'}))
+						.catch((error) => res.status(400).json({ error }))
+				}
+
+				if (sauce.usersDisliked.includes(req.body.userId)) {
+					Sauce.updateOne({ _id: req.params.id }, { $pull: { usersDisliked: req.body.userId };
+						$inc: { dislikes: -1}, _id: req.params.id })
+						.then(() => res.status(200).json({ message: 'Vous ne dislikez plus cette sauce !'}))
+						.catch((error) => res.status(400).json({ error }))
+				}
+			})
+			.catch((error) => res.status(404).json({ error }))
+		}
+}
