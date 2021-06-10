@@ -34,7 +34,17 @@ app.use((req, res, next) => {
 });
 
 /* Middleware permettant la sécurisation des cookies */
-
+const expiryDate = new Date(Date.now() + 60 * 60 * 1000);
+app.use(session({
+	name: 'sessionId',
+	secret: process.env.KEY_SESSION,
+	cookie: {
+		secure: true,
+		httpOnly: true,
+		domain: 'http://localhost:3000',
+		expires: expiryDate
+	}
+}));
 
 /* Middleware permettant de parser les requêtes envoyées par le client. On peut y accéder grâce à req.body */
 app.use(bodyParser.urlencoded({
