@@ -10,7 +10,7 @@ const session = require('cookie-session');
 
 /* Déclaration des routes */
 const userRoutes = require('./routes/user');
-
+const sauceRoutes = require('./routes/sauce');
 
 /* Création d'une application express*/
 const app = express();
@@ -61,7 +61,8 @@ app.use(bodyParser.json());
 app.use('/images/', express.static(path.join(__dirname, 'images')));
 
 /* Middlewares permettant de transmettre les requêtes vers les routes correspondantes */
-
+app.use('/api/sauces', sauceRoutes);
+app.use('/api/auth', userRoutes);
 
 /* Exportation de l'application */
 module.exports = app;
