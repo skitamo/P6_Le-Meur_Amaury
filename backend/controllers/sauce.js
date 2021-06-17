@@ -21,7 +21,7 @@ exports.createSauce = (req, res, next) => {
 				.then(() => res.status(201).json({ message: 'Sauce enregistrée !'}))
 				.catch(error => res.status(400).json({ error }));
 			}
-			else {console.log(alert('Sauce déjà existante !'))} 
+			else {console.log('Sauce déjà existante !')} 
 		})
 		.catch(error => res.status(404).json({ error }));
 };

@@ -4,8 +4,8 @@ const multer = require('multer');
 /* Création d'un disctionnaire des types MIME */
 const MIME_TYPES = {
 	'image/jpg': 'jpg',
-	'image.jpeg': 'jpg',
-	'image.png': 'png'
+	'image/jpeg': 'jpg',
+	'image/png': 'png'
 };
 
 /* Création d'un objet de configuration pour multer */
